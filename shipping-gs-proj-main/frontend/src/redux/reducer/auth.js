@@ -2,7 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Load user from localStorage if available
-const userFromStorage = JSON.parse(localStorage.getItem("user")) || null;
+const userFromStorage = JSON.parse(sessionStorage.getItem("user")) || null;
 
 const initialState = {
   user: userFromStorage,

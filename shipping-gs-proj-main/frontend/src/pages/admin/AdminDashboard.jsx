@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { UserPen } from "lucide-react";
-function AdminDashboardOverview() {
+function AdminDashboard() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
 
@@ -82,4 +82,4 @@ function AdminDashboardOverview() {
   );
 }
 
-export default AdminDashboardOverview;
+export default AdminDashboard;

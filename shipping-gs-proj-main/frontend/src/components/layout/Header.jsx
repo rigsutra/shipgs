@@ -1,21 +1,29 @@
 // src/components/layout/Header.jsx
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { navLinks } from "../../lib/constants";
 import { UserPen, Menu, X } from "lucide-react";
+import { userNotExists } from "../../redux/reducer/auth";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false); // Manage menu state
   const location = useLocation(); // Get the current location (pathname)
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Get dispatch function from Redux
 
   const { user } = useSelector((state) => state.auth); // Get user data from Redux
   const userRole = user?.role;
 
   // Filter links based on user role
   const filteredNavLinks = navLinks.filter(
-    (link) => link.role === "all" || link.role === userRole
+    (link) =>  link.role === userRole
   );
+
+  const handleLogout = () => {
+    dispatch(userNotExists());
+    navigate("/login");
+  };
 
   return (
     <div className="relative">
@@ -70,6 +78,7 @@ function Header() {
               <p>{link.label}</p>
             </Link>
           ))}
+          <button onClick={handleLogout}>LogOut</button>
         </div>
       </div>
 

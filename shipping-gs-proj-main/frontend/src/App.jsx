@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Header from "./components/layout/Header";
 import Loader from "./components/layout/Loader";
 import ProtectRoute from "./components/auth/ProtectedRoute";
-// import AdminProtectRoute from "./components/auth/AdminProtectRoute";
+import AdminProtectRoute from "./components/auth/AdminProtectRoute";
 
 const Home = lazy(() => import("./pages/Home"));
 const FAQs = lazy(() => import("./pages/FAQs"));
@@ -19,8 +19,8 @@ const CreateFedexOrder = lazy(() => import("./pages/CreateFedexOrder"));
 const Deposite = lazy(() => import("./pages/Deposite"));
 
 //Admin
-const AdminDashboardOverview = lazy(() =>
-  import("./pages/admin/AdminDashboardOverview")
+const AdminDashboard = lazy(() =>
+  import("./pages/admin/AdminDashboard")
 );
 const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
 const AdminRevenue = lazy(() => import("./pages/admin/AdminRevenue"));
@@ -46,7 +46,14 @@ function App() {
                 path="/login"
                 element={!user ? <Login /> : <Navigate to="/" replace />}
               />
-              <Route path="*" element={<NotFound />} />
+
+              {/* Admin Protected Routes */}
+              <Route element={<AdminProtectRoute />}>
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/admin-orders" element={<AdminOrders />} />
+                <Route path="/admin-revenue" element={<AdminRevenue />} />
+                <Route path="/admin-faqs" element={<AdminFAQs />} />
+              </Route>
 
               {/* User Protected Routes */}
               <Route element={<ProtectRoute />}>
@@ -63,16 +70,8 @@ function App() {
                 <Route path="/CreateAddresses" element={<CreateAddresses />} />
               </Route>
 
-              {/* Admin Protected Routes */}
-              {/* <Route element={<AdminProtectRoute />}> */}
-              <Route
-                path="/admin-dashboard"
-                element={<AdminDashboardOverview />}
-              />
-              <Route path="/admin-orders" element={<AdminOrders />} />
-              <Route path="/admin-revenue" element={<AdminRevenue />} />
-              <Route path="/admin-faqs" element={<AdminFAQs />} />
-              {/* </Route> */}
+              {/* Fallback route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </div>

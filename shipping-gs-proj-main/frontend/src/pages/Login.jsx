@@ -73,7 +73,7 @@ function Login() {
       if (success) {
         dispatch(userExists(user));
         toast.success(message, { id: toastId });
-        navigate(role === "admin" ? "/admin-dashboard" : "/");
+        // navigate(role === "admin" ? "/admin-dashboard" : "/");
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Login failed", {
