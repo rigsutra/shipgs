@@ -18,13 +18,13 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAdmin = action.payload.role === "admin"; // Set isAdmin based on role
       state.loader = false;
-      localStorage.setItem("user", JSON.stringify(action.payload)); // Store user in localStorage
+      sessionStorage.setItem("user", JSON.stringify(action.payload)); // Store user in localStorage
     },
     userNotExists: (state) => {
       state.user = null;
       state.isAdmin = false;
       state.loader = false;
-      localStorage.removeItem("user"); // Clear user from localStorage
+      sessionStorage.removeItem("user"); // Clear user from localStorage
     },
     setLoader: (state, action) => {
       state.loader = action.payload; // Set loader state

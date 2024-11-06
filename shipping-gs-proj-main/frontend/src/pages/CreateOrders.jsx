@@ -491,6 +491,8 @@ const AddressSection = ({ title, address, setAddress }) => (
 );
 
 // Reusable Address Form for Normal Order
+import PropTypes from "prop-types";
+
 const AddressForm = ({
   title,
   name,
@@ -510,14 +512,7 @@ const AddressForm = ({
   country,
   setCountry,
 }) => (
-  <VStack
-    spacing={4}
-    p={4}
-    bg="gray.800"
-    borderRadius="md"
-    boxShadow="md"
-    color="white"
-  >
+  <VStack spacing={4} p={4} bg="gray.800" borderRadius="md" boxShadow="md">
     <Text fontSize="lg" fontWeight="bold">
       {title} Address
     </Text>
@@ -555,6 +550,7 @@ const AddressForm = ({
       value={state}
       onChange={(e) => setState(e.target.value)}
       placeholder="Select state"
+      textColor={"white"}
     >
       <option value="State 1">State 1</option>
       <option value="State 2">State 2</option>
@@ -564,6 +560,7 @@ const AddressForm = ({
       value={country}
       onChange={(e) => setCountry(e.target.value)}
       placeholder="Select country"
+     
     >
       <option value="India">India</option>
       <option value="United States">United States</option>
@@ -572,5 +569,25 @@ const AddressForm = ({
     </Select>
   </VStack>
 );
+
+AddressForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  setName: PropTypes.func.isRequired,
+  company: PropTypes.string,
+  setCompany: PropTypes.func.isRequired,
+  street: PropTypes.string.isRequired,
+  setStreet: PropTypes.func.isRequired,
+  street2: PropTypes.string,
+  setStreet2: PropTypes.func.isRequired,
+  zipCode: PropTypes.string.isRequired,
+  setZipCode: PropTypes.func.isRequired,
+  city: PropTypes.string.isRequired,
+  setCity: PropTypes.func.isRequired,
+  state: PropTypes.string.isRequired,
+  setState: PropTypes.func.isRequired,
+  country: PropTypes.string.isRequired,
+  setCountry: PropTypes.func.isRequired,
+};
 
 export default OrderForm;

@@ -50,29 +50,17 @@ const Deposit = () => {
   const handleAddBalance = async () => {
     try {
       setLoading(true);
-      // Create a payment request with NOWPayments
       const paymentResponse = await axios.post(
-        "https://api.nowpayments.io/v1/invoice",
+        "http://localhost:5000/api/create-payment",
         {
-          price_amount: amount,
-          price_currency: "USD", // Adjust the currency as needed
-          pay_currency: "BTC", // Cryptocurrency to be paid in (change as needed)
-          order_id: `order_${Date.now()}`, // Unique identifier for your order
-          order_description: "Balance top-up",
-          success_url: "http://localhost:3000/success", // Redirect after successful payment
-          cancel_url: "http://localhost:3000/cancel", // Redirect if the payment is canceled
-        },
-        {
-          headers: {
-            "x-api-key": "YOUR_NOWPAYMENTS_API_KEY", // Replace with your actual NOWPayments API key
-          },
+          amount,
         }
       );
 
-      // Redirect to the payment URL
-      window.location.href = paymentResponse.data.invoice_url;
+      // Redirect to the payment URL provided by the backend
+      window.location.href = paymentResponse.data.invoiceUrl;
     } catch (error) {
-      console.error("Error adding balance with NOWPayments", error);
+      console.error("Error adding balance", error);
       alert("Failed to initiate payment");
       setLoading(false);
     }
@@ -111,7 +99,6 @@ const Deposit = () => {
           />
           <Select width="150px" bg="gray.700" borderColor="gray.600" mr={2}>
             <option value="crypto">Crypto</option>
-            {/* Add more payment methods if needed */}
           </Select>
           <Button
             colorScheme="blue"

@@ -29,55 +29,57 @@ function Dashboard() {
   const [searchInput, setSearchInput] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const [adminName, setAdminName] = useState(""); // State for admin name
+  const [userName, setUser] = useState(""); // State for admin name
 
   const navigate = useNavigate();
 
   const EditProfile = () => {
-    navigate("/EditProfile");
+    navigate("/Profile");
   };
 
   // Fetch admin name
   useEffect(() => {
-    const fetchAdminName = async () => {
+    // Retrieve the user data from localStorage
+    const storedUser = sessionStorage.getItem("user");
+
+    if (storedUser) {
       try {
-        const response = await fetch("http://localhost:5000/api/AdminDetails");
-        const data = await response.json();
-
-        if (data && data.length > 0) {
-          setAdminName(data[0].name); // Set the fetched name
-        }
+        // Parse the JSON string back to an object
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
       } catch (error) {
-        console.error("Error fetching admin details:", error);
+        console.error("Error parsing stored user data", error);
       }
-    };
-
-    fetchAdminName();
+    }
   }, []);
-
   // Fetch orders and calculate totals
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/USPSOrders"); // Your API endpoint
+        const response = await fetch("http://localhost:5000/api/USPSOrders");
         const data = await response.json();
 
         // Log the fetched data to check if it's coming through correctly
         console.log("Fetched Orders: ", data);
 
-        // Ensure data is an array
-        if (Array.isArray(data) && data.length > 0) {
-          setOrders(data);
+        // Access the orders array from data.orders
+        if (Array.isArray(data.orders) && data.orders.length > 0) {
+          setOrders(data.orders);
 
           // Calculate total revenue and total orders
-          const revenue = data.reduce(
-            (acc, order) => acc + (parseFloat(order.total_order_amount) || 0),
+          const revenue = data.orders.reduce(
+            (acc, order) => acc + (parseFloat(order.total_price) || 0),
             0
           );
-          const orderCount = data.length;
+          const orderCount = data.totalOrders || data.orders.length;
 
           setTotalRevenue(revenue);
           setTotalOrders(orderCount);
+        } else {
+          // Handle case when orders array is empty or not present
+          setOrders([]);
+          setTotalRevenue(0);
+          setTotalOrders(0);
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -108,8 +110,10 @@ function Dashboard() {
   const columns = React.useMemo(
     () => [
       { Header: "#", accessor: (row, i) => i + 1 }, // Index number for each row
-      { Header: "From", accessor: "from_name" }, // Changed to "from_name"
-      { Header: "To", accessor: "to_name" }, // Changed to "to_name"
+      { Header: "From", accessor: "fromAddress.name" }, // Accessing nested field
+      { Header: "From Company", accessor: "fromAddress.company_name" }, // Accessing nested field
+      { Header: "To", accessor: "toAddress.name" }, // Accessing nested field
+      { Header: "To Company", accessor: "toAddress.company_name" }, // Accessing nested field
       { Header: "Type", accessor: "order_type" }, // Changed to "order_type"
       { Header: "Amount", accessor: "total_price" }, // Changed to "total_price"
       { Header: "Status", accessor: "status" }, // No change needed
@@ -157,7 +161,7 @@ function Dashboard() {
           <h1 className="text-[1.85rem]">$ 0.00</h1>
           <div className="flex">
             <UserPen />
-            <p>{adminName || "Loading..."}</p> {/* Display admin name */}
+            <p>{userName.name || "Loading..."}</p> {/* Display admin name */}
           </div>
         </div>
       </div>

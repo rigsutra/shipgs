@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Invoice = require("../models/Invoice");
 const Balance = require("../models/Balance");
+const axios = require("axios");
 
 // Route to get the current balance
 router.get("/balance", async (req, res) => {
@@ -27,35 +28,44 @@ router.get("/invoices", async (req, res) => {
   }
 });
 
-// Route to add balance
-router.post("/add-balance", async (req, res) => {
+// Route to create a payment request (server-side)
+router.post("/create-payment", async (req, res) => {
   try {
     const { amount } = req.body;
+    const orderId = `order_${Date.now()}`;
 
-    let balance = await Balance.findOne();
-    if (!balance) {
-      balance = new Balance();
-    }
+    const paymentResponse = await axios.post(
+      "https://api.nowpayments.io/v1/invoice",
+      {
+        price_amount: amount,
+        price_currency: "USD",
+        pay_currency: "BTC",
+        order_id: orderId,
+        order_description: "Balance top-up",
+        success_url: "http://localhost:3000/success",
+        cancel_url: "http://localhost:3000/cancel",
+      },
+      {
+        headers: {
+          "x-api-key": process.env.NOWPAYMENTS_API_KEY, // Secure the key in environment variables
+        },
+      }
+    );
 
-    balance.amount += parseFloat(amount);
-    await balance.save();
-
-    // Create an invoice entry
+    // Save the invoice to the database
     const invoice = new Invoice({
-      amount: amount,
+      amount,
       paymentMethod: "Crypto",
       status: "Pending",
+      orderId,
+      invoiceUrl: paymentResponse.data.invoice_url,
     });
     await invoice.save();
 
-    res
-      .status(200)
-      .json({
-        message: "Balance updated successfully",
-        balance: balance.amount,
-      });
+    res.status(200).json({ invoiceUrl: paymentResponse.data.invoice_url });
   } catch (error) {
-    res.status(500).json({ message: "Error updating balance", error });
+    console.error("Error creating payment with NOWPayments:", error);
+    res.status(500).json({ message: "Failed to create payment", error });
   }
 });
 
