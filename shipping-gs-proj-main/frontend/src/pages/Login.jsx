@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { userExists } from "../redux/reducer/auth";
 import { useNavigate } from "react-router-dom";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 // Custom hook for input validation
 const useInputValidation = (initialValue, validator) => {
   const [value, setValue] = useState(initialValue);
@@ -61,7 +61,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/login`,
+        `${baseUrl}/api/login`,
         { username: username.value, password: password.value },
         {
           withCredentials: true,
@@ -73,7 +73,7 @@ function Login() {
       if (success) {
         dispatch(userExists(user));
         toast.success(message, { id: toastId });
-        // navigate(role === "admin" ? "/admin-dashboard" : "/");
+        navigate(role === "admin" ? "/admin-dashboard" : "/");
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Login failed", {
@@ -92,7 +92,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/signup`,
+        `${baseUrl}/api/signup`,
         {
           name: name.value,
           username: username.value,

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Input, Button, VStack, Text, HStack } from "@chakra-ui/react";
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function AdminFAQs() {
   const [faqs, setFaqs] = useState([]);
   const [newQuestion, setNewQuestion] = useState("");
@@ -17,7 +17,7 @@ function AdminFAQs() {
     const fetchFAQs = async () => {
       // setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/getFaqs");
+        const response = await axios.get(`${baseUrl}/api/getFaqs`);
         setFaqs(response.data);
       } catch (error) {
         console.error("Error fetching FAQs:", error);
@@ -34,7 +34,7 @@ function AdminFAQs() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/createFaqs",
+        `${baseUrl}/api/createFaqs`,
         {
           question: newQuestion,
           answer: newAnswer,
@@ -51,7 +51,7 @@ function AdminFAQs() {
   // Delete FAQ
   const handleDeleteFAQ = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/deleteFaq/${id}`);
+      await axios.delete(`${baseUrl}/api/deleteFaq/${id}`);
       setFaqs(faqs.filter((faq) => faq._id !== id));
     } catch (error) {
       console.error("There was an error deleting the FAQ!", error);
@@ -71,7 +71,7 @@ function AdminFAQs() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/updateFaq/${editingId}`,
+        `${baseUrl}/api/updateFaq/${editingId}`,
         {
           question: editingQuestion,
           answer: editingAnswer,

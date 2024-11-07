@@ -12,13 +12,13 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch("http://localhost:5000/api/fedexorder");
+      const response = await fetch(`${baseUrl}/api/fedexorder`);
       const data = await response.json();
       setOrders(data);
     };
@@ -26,7 +26,7 @@ function AdminOrders() {
   }, []);
 
   const handleStatusChange = async (id, status) => {
-    await fetch(`http://localhost:5000/api/fedexorder/${id}`, {
+    await fetch(`${baseUrl}/api/fedexorder/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

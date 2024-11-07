@@ -16,7 +16,7 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const Deposit = () => {
   const [balance, setBalance] = useState(0); // Initialize with 0
   const [invoices, setInvoices] = useState([]);
@@ -29,10 +29,10 @@ const Deposit = () => {
       try {
         setLoading(true);
         const balanceResponse = await axios.get(
-          "http://localhost:5000/api/balance"
+          `${baseUrl}/api/balance`
         );
         const invoicesResponse = await axios.get(
-          "http://localhost:5000/api/invoices"
+          `${baseUrl}/api/invoices`
         );
 
         setBalance(balanceResponse.data.balance);
@@ -51,7 +51,7 @@ const Deposit = () => {
     try {
       setLoading(true);
       const paymentResponse = await axios.post(
-        "http://localhost:5000/api/create-payment",
+        `${baseUrl}/api/create-payment`,
         {
           amount,
         }

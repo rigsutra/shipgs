@@ -1,14 +1,14 @@
 // src/pages/AdminRevenue.jsx
 import React, { useEffect, useState } from "react";
 import { Box, Text, Stat, StatLabel, StatNumber } from "@chakra-ui/react";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function AdminRevenue() {
   const [totalRevenue, setTotalRevenue] = useState(0);
 
   useEffect(() => {
     const fetchRevenue = async () => {
-      const fedexResponse = await fetch("http://localhost:5000/api/fedexorder");
-      const uspsResponse = await fetch("http://localhost:5000/api/uspsorder");
+      const fedexResponse = await fetch(`${baseUrl}/api/fedexorder`);
+      const uspsResponse = await fetch(`${baseUrl}/api/uspsorder`);
       const fedexData = await fedexResponse.json();
       const uspsData = await uspsResponse.json();
 

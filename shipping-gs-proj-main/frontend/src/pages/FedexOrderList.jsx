@@ -1,6 +1,7 @@
 // src/pages/FedexOrderList.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 import {
   Button,
   Input,
@@ -30,7 +31,7 @@ function FedexOrderList() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/getfedexorder",
+          `${baseUrl}/api/getfedexorder`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -114,7 +115,7 @@ function FedexOrderList() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure?")) {
       try {
-        await fetch(`http://localhost:5000/api/deleteorder/${id}`, {
+        await fetch(`${baseUrl}/api/deleteorder/${id}`, {
           method: "DELETE",
         });
         setData(data.filter((order) => order._id !== id));

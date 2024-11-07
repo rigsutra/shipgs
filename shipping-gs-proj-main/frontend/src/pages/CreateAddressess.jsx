@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 const CreateAddresses = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -38,8 +38,8 @@ const CreateAddresses = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/postaddresses`,
+      await axios.post(
+        `${baseUrl}/api/postaddresses`,
         formData // Correctly pass formData as payload
       );
 

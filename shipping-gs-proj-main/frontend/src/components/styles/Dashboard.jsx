@@ -21,6 +21,7 @@ import {
 import { CircleDollarSign, ShoppingBag, UserPen } from "lucide-react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import { useNavigate } from "react-router-dom";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function Dashboard() {
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -56,7 +57,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/USPSOrders");
+        const response = await fetch(`${baseUrl}/api/USPSOrders`);
         const data = await response.json();
 
         // Log the fetched data to check if it's coming through correctly

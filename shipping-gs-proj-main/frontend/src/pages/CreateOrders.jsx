@@ -11,7 +11,7 @@ import {
   Flex,
   useToast,
 } from "@chakra-ui/react";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 // Sample saved addresses
 const savedAddresses = [
   { id: 1, name: "John Doe", address: "123 Main St, Cityville, State, 12345" },
@@ -100,7 +100,7 @@ const QuickOrderForm = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/orders/quick",
+        `${baseUrl}/api/orders/quick`,
         quickOrderData,
         {
           headers: {
@@ -136,7 +136,7 @@ const QuickOrderForm = () => {
   const fetchPrice = async (orderType) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/getPrices", {
+      const response = await axios.post(`${baseUrl}/api/getPrices`, {
         type: orderType,
       });
       setPrice(response.data.price);
@@ -270,7 +270,7 @@ const NormalOrderForm = () => {
   const fetchPrice = async (orderType) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:5000/api/getPrices", {
+      const response = await axios.post(`${baseUrl}/api/getPrices`, {
         type: orderType,
       });
       setPrice(response.data.price);
@@ -326,7 +326,7 @@ const NormalOrderForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/orders/normal",
+        `${baseUrl}/api/orders/normal`,
         normalOrderData
       );
       console.log("Normal order response:", response.data);

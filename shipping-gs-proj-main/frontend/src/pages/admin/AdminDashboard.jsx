@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 import { UserPen } from "lucide-react";
 function AdminDashboard() {
   const [totalOrders, setTotalOrders] = useState(0);
@@ -28,9 +28,9 @@ function AdminDashboard() {
     // Fetch total orders and revenue
     const fetchData = async () => {
       const ordersResponse = await fetch(
-        "http://localhost:5000/api/fedexorder"
+        `${baseUrl}/api/fedexorder`
       );
-      const uspsResponse = await fetch("http://localhost:5000/api/uspsorder");
+      const uspsResponse = await fetch(`${baseUrl}/api/uspsorder`);
       const ordersData = await ordersResponse.json();
       const uspsData = await uspsResponse.json();
 

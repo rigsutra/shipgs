@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import { useNavigate } from "react-router-dom";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function Addresses() {
   const [data, setData] = useState([]); // State to hold API data
   const [loading, setLoading] = useState(true); // State to manage loading state
@@ -29,7 +29,7 @@ function Addresses() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/getaddresses"); // Replace with your API endpoint
+        const response = await fetch(`${baseUrl}/api/getaddresses`); // Replace with your API endpoint
         const jsonData = await response.json();
         setData(jsonData);
         setLoading(false); // Set loading to false after data is fetched

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "npm run build",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -19,6 +20,7 @@
     "6pp": "^1.2.16",
     "axios": "^1.7.7",
     "create-6pp-app": "^1.0.3",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.11.10",
     "lucide-react": "^0.447.0",
     "papaparse": "^5.4.1",

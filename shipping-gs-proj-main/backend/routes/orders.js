@@ -99,4 +99,15 @@ router.get("/USPSOrders", async (req, res) => {
   }
 });
 
+router.get("/USPAaddresses", async (req, res) => {
+  try {
+    const addresses = await Address.find().sort({ date: -1 });
+    res.json({ addresses });
+  } catch (error) {
+    console.error("Error fetching addresses:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 module.exports = router;

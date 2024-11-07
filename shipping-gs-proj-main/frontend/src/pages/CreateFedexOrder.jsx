@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function CreateFedexOrder() {
   const toast = useToast();
 
@@ -82,7 +82,7 @@ function CreateFedexOrder() {
     try {
       // Make API request to create the order
       const response = await axios.post(
-        "http://localhost:5000/api/createfedexorder",
+        `${baseUrl}/api/createfedexorde`,
         formData,
         {
           headers: {

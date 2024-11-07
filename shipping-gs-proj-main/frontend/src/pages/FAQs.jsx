@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function FAQs() {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ function FAQs() {
     const fetchFAQs = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/getFaqs");
+        const response = await axios.get(`${baseUrl}/api/getFaqs`);
         setFaqs(response.data);
       } catch (error) {
         console.error("Error fetching FAQs:", error);
