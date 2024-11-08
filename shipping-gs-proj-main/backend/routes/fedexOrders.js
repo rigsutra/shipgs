@@ -27,7 +27,7 @@ router.get("/getfedexorder", async (req, res) => {
 router.post("/createfedexorder", async (req, res) => {
   const { no, status, note, price, orderId, action, senderAddress, receiverAddress } = req.body;
 
-  if ( !price || !orderId ) {
+  if (!no || !status || !note || !price || !orderId || !action) {
     return res.status(400).json({ message: "Please fill in all required fields for the order." });
   }
 
@@ -186,5 +186,6 @@ router.post("/createFedexaddresses", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 module.exports = router;
